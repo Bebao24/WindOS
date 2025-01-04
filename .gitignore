@@ -1,0 +1,4 @@
+bin/
+bootloader/limine
+target/kernel
+
