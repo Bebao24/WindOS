@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/lib/boot",
-                "${workspaceFolder}/kernel/src/arch/x86_64/cpu"
+                "${workspaceFolder}/kernel/src/arch/x86_64/cpu",
+                "${workspaceFolder}/kernel/src/drivers"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

@@ -2,6 +2,7 @@
 #include <boot.h>
 #include <stdbool.h>
 #include <system.h>
+#include <logging.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -14,7 +15,9 @@ void kmain()
         panic();
     }
 
-    ParseBootInfo();    
+    ParseBootInfo();
+
+    debugf("Hello World!\nTest: 0x%x\n", 0x123);
 
     while (true)
     {

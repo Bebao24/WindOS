@@ -1,6 +1,6 @@
 TARGET_ASMFLAGS += -f elf64
 TARGET_CFLAGS += -Wall -Wextra -ffreestanding -fno-stack-protector -fno-stack-check \
-				-mno-80387 -mno-mmx -mno-sse -mno-sse2 -mno-red-zone
+				-mno-80387 -mno-mmx -mno-sse -mno-sse2 -mno-red-zone -fPIE -mcmodel=large
 
 TARGET_LINKFLAGS += -m elf_x86_64 \
 				   -nostdlib \
@@ -8,7 +8,8 @@ TARGET_LINKFLAGS += -m elf_x86_64 \
 				   -z max-page-size=0x1000 \
 				   -T linker.ld
 
-TARGET_CFLAGS += -I ../lib -I ../lib/boot -I src -I src/arch/x86_64 -I src/arch/x86_64/cpu
+TARGET_CFLAGS += -I ../lib -I ../lib/boot -I src -I src/arch/x86_64 -I src/arch/x86_64/cpu -I src/debug \
+				-I src/drivers
 
 C_SOURCES := $(shell find src -name "*.c")
 C_OBJECTS := $(patsubst src/%.c, $(BUILD_DIR)/kernel/x86_64/%.o, $(C_SOURCES))

@@ -19,7 +19,7 @@ bootloader:
 	@ ./bootloader/fetch.sh
 
 run:
-	qemu-system-x86_64 -drive file=$(BUILD_DIR)/disk.img,format=raw -m 256M
+	qemu-system-x86_64 -debugcon stdio -drive file=$(BUILD_DIR)/disk.img,format=raw -m 256M
 
 always:
 	@ mkdir -p $(BUILD_DIR)
