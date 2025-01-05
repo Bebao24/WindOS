@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/lib/boot"
+                "${workspaceFolder}/lib/boot",
+                "${workspaceFolder}/kernel/src/arch/x86_64/cpu"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
