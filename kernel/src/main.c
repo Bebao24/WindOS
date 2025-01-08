@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <system.h>
 #include <logging.h>
+#include <framebuffer.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -17,7 +18,11 @@ void kmain()
 
     ParseBootInfo();
 
-    debugf("Hello World!\nTest: 0x%x\n", 0x123);
+    // Limine already identity mapping the framebuffer
+    InitializeFramebuffer();
+    fb_clearScreen(COLOR(0, 0, 255));
+    
+    fb_drawRect(200, 200, 100, 100, COLOR(255, 0, 0));
 
     while (true)
     {
