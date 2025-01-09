@@ -22,7 +22,7 @@ void kmain()
     InitializeFramebuffer();
     fb_clearScreen(COLOR(0, 0, 255));
     
-    fb_drawRect(200, 200, 100, 100, COLOR(255, 0, 0));
+    fb_drawChar(100, 100, COLOR(255, 255, 255), 'G');
 
     while (true)
     {

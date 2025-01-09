@@ -13,4 +13,5 @@ void InitializeFramebuffer();
 void fb_PutPixel(uint32_t x, uint32_t y, uint32_t color);
 void fb_clearScreen(uint32_t color);
 void fb_drawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color);
+void fb_drawChar(uint32_t x, uint32_t y, uint32_t color, char c);
 

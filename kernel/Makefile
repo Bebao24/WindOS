@@ -8,8 +8,8 @@ TARGET_LINKFLAGS += -m elf_x86_64 \
 				   -z max-page-size=0x1000 \
 				   -T linker.ld
 
-TARGET_CFLAGS += -I ../lib -I ../lib/boot -I src -I src/arch/x86_64 -I src/arch/x86_64/cpu -I src/debug \
-				-I src/drivers -I src/graphics
+TARGET_CFLAGS += -I ../lib -I ../lib/boot -I ../lib/fonts -I src -I src/arch/x86_64 -I src/arch/x86_64/cpu -I src/debug \
+				-I src/drivers -I src/graphics -I src/graphics/fonts
 
 C_SOURCES := $(shell find src -name "*.c")
 C_OBJECTS := $(patsubst src/%.c, $(BUILD_DIR)/kernel/x86_64/%.o, $(C_SOURCES))

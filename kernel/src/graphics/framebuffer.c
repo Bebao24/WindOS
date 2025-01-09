@@ -3,6 +3,7 @@
 #include <system.h>
 #include <stddef.h>
 #include <logging.h>
+#include <psf.h>
 
 uint32_t* fb = NULL;
 uint64_t fbWidth;
@@ -29,6 +30,12 @@ void InitializeFramebuffer()
     fbHeight = limineFb->height;
     fbPitch = limineFb->pitch;
     debugf("Framebuffer resolution: %dx%d, pitch: %d\n", fbWidth, fbHeight, fbPitch);
+
+    if (!psf_LoadFont())
+    {
+        debugf("Failed to load PSF font!\n");
+        panic();
+    }
 }
 
 void fb_PutPixel(uint32_t x, uint32_t y, uint32_t color)
@@ -61,4 +68,19 @@ void fb_drawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color)
     }
 }
 
+void fb_drawChar(uint32_t x, uint32_t y, uint32_t color, char c)
+{
+    uint8_t* glyphBuffer = psf_GetGlyphBuffer(c);
+
+    for (uint32_t yy = 0; yy < 16; yy++)
+    {
+        for (uint32_t xx = 0; xx < 8; xx++)
+        {
+            if (glyphBuffer[yy] & (1 << (8 - xx)))
+            {
+                fb_PutPixel(x + xx, yy + y, color);
+            }
+        }
+    }
+}
 
