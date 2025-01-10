@@ -4,6 +4,7 @@
 #include <system.h>
 #include <logging.h>
 #include <framebuffer.h>
+#include <console.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -20,9 +21,11 @@ void kmain()
 
     // Limine already identity mapping the framebuffer
     InitializeFramebuffer();
-    fb_clearScreen(COLOR(0, 0, 255));
-    
-    fb_drawChar(100, 100, COLOR(255, 255, 255), 'G');
+    InitializeConsole();
+
+    clearScreen();
+
+    printf("Hello World!\nTest: 0x%x\n", 0x123);
 
     while (true)
     {

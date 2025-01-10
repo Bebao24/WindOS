@@ -72,15 +72,16 @@ void fb_drawChar(uint32_t x, uint32_t y, uint32_t color, char c)
 {
     uint8_t* glyphBuffer = psf_GetGlyphBuffer(c);
 
-    for (uint32_t yy = 0; yy < 16; yy++)
+    for (uint32_t yy = y; yy < y + 16; yy++)
     {
-        for (uint32_t xx = 0; xx < 8; xx++)
+        for (uint32_t xx = x; xx < x + 8; xx++)
         {
-            if (glyphBuffer[yy] & (1 << (8 - xx)))
+            if ((*glyphBuffer & (0b10000000 >> (xx - x))) > 0)
             {
-                fb_PutPixel(x + xx, yy + y, color);
+                fb_PutPixel(xx, yy, color);
             }
         }
+        glyphBuffer++;
     }
 }
 
