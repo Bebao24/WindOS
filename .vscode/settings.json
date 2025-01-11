@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "logging.h": "c",
-        "psf.h": "c"
+        "psf.h": "c",
+        "console.h": "c"
     }
 }
