@@ -7,6 +7,8 @@
 #include <console.h>
 #include <bitmap.h>
 #include <memory.h>
+#include <pmm.h>
+#include <util.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -27,24 +29,13 @@ void kmain()
 
     clearScreen();
 
-    // Test bitmap
-    uint8_t test[20];
-    memset(test, 0, sizeof(test));
+    InitializePMM();
 
-    Bitmap testBitmap;
-    testBitmap.bitmapBuffer = &test[0];
-    Bitmap_Set(&testBitmap, 1, true);
-    Bitmap_Set(&testBitmap, 4, true);
-    Bitmap_Set(&testBitmap, 5, true);
-    Bitmap_Set(&testBitmap, 6, true);
-    Bitmap_Set(&testBitmap, 11, true);
-    Bitmap_Set(&testBitmap, 12, true);
+    printf("Free memory: %d KB\n", DivRoundUp(pmm_GetFreeMemory(), 1024));
+    printf("Used memory: %d KB\n", DivRoundUp(pmm_GetUsedMemory(), 1024));
+    printf("Reserved memory: %d KB\n", DivRoundUp(pmm_GetReservedMemory(), 1024));
 
-    for (int i = 0; i < 15; i++)
-    {
-        printf(Bitmap_Get(&testBitmap, i) ? "true" : "false");
-        putc('\n');
-    }
+    printf("Hello World!\n");
 
     while (true)
     {
