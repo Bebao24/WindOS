@@ -1,6 +1,6 @@
 include build/config.mk
 
-.PHONY: all disk kernel bootloader clean always run
+.PHONY: all disk kernel bootloader clean always run run-uefi
 
 all: disk
 
@@ -20,6 +20,13 @@ bootloader:
 
 run:
 	qemu-system-x86_64 -debugcon stdio -drive file=$(BUILD_DIR)/disk.img,format=raw -m 256M
+
+run-uefi:
+	qemu-system-x86_64 -debugcon stdio -drive file=$(BUILD_DIR)/disk.img,format=raw -m 256M \
+	-drive if=pflash,format=raw,unit=0,file=OVMFbin/OVMF_CODE-pure-efi.fd,readonly=on \
+	-drive if=pflash,format=raw,unit=1,file=OVMFbin/OVMF_VARS-pure-efi.fd
+	
+	
 
 always:
 	@ mkdir -p $(BUILD_DIR)
