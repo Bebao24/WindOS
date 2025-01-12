@@ -31,6 +31,11 @@ void kmain()
 
     InitializePMM();
 
+    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
+    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
+    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
+
+
     printf("Free memory: %d KB\n", DivRoundUp(pmm_GetFreeMemory(), 1024));
     printf("Used memory: %d KB\n", DivRoundUp(pmm_GetUsedMemory(), 1024));
     printf("Reserved memory: %d KB\n", DivRoundUp(pmm_GetReservedMemory(), 1024));

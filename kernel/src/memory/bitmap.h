@@ -7,6 +7,9 @@ typedef struct
 {
     size_t bitmapSize;
     uint8_t* bitmapBuffer;
+
+    // Optimization
+    uint64_t lastDeepFragmented;
 } Bitmap;
 
 bool Bitmap_Get(Bitmap* bitmap, uint64_t index);

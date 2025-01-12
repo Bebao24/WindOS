@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #define PAGE_SIZE 4096
-#define INVALID_PAGE ((size_t)-1)
+#define INVALID_PAGE ((uint64_t)-1)
 
 void InitializePMM();
 
@@ -20,4 +20,7 @@ void pmm_ReservePages(void* address, uint64_t pagesCount);
 uint64_t pmm_GetFreeMemory();
 uint64_t pmm_GetUsedMemory();
 uint64_t pmm_GetReservedMemory();
+
+void* pmm_AllocatePage();
+void* pmm_AllocatePages(uint64_t numPages);
 

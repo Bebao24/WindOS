@@ -13,6 +13,7 @@ uint64_t reservedMemory;
 Bitmap g_PhysicalBitmap;
 
 void pmm_InitializeBitmap(size_t bitmapSize, void* bitmapAddress);
+uint64_t pmm_FindFreeRegion(Bitmap* bitmap, size_t numPages);
 
 void InitializePMM()
 {
@@ -65,7 +66,72 @@ void pmm_InitializeBitmap(size_t bitmapSize, void* bitmapAddress)
     g_PhysicalBitmap.bitmapSize = bitmapSize;
     // The memory is physical memory
     g_PhysicalBitmap.bitmapBuffer = (uint8_t*)(bitmapAddress + g_BootInfo.hhdmOffset);
+    g_PhysicalBitmap.lastDeepFragmented = 0;
     memset(g_PhysicalBitmap.bitmapBuffer, 0, bitmapSize);
+}
+
+uint64_t pmm_FindFreeRegion(Bitmap* bitmap, size_t numPages)
+{
+    uint64_t currentRegionStart = bitmap->lastDeepFragmented;
+    size_t currentRegionSize = 0;
+    debugf("current region start: %d\n", currentRegionStart);
+
+    for (uint64_t i = currentRegionStart; i < bitmap->bitmapSize * 8; i++)
+    {
+        if (Bitmap_Get(bitmap, i))
+        {
+            // It is not free
+            currentRegionSize = 0;
+            currentRegionStart = i + 1;
+        }
+        else
+        {
+            // It is free
+            if (numPages == 1)
+            {
+                bitmap->lastDeepFragmented = currentRegionStart + 1;
+            }
+
+            currentRegionSize++;
+            if (currentRegionSize >= numPages)
+            {
+                return currentRegionStart;
+            }
+        }
+    }
+
+    debugf("Ran out of physical memory!\n");
+    return INVALID_PAGE;
+}
+
+void* pmm_AllocatePage()
+{
+    uint64_t region = pmm_FindFreeRegion(&g_PhysicalBitmap, 1);
+    if (region == INVALID_PAGE)
+    {
+        return NULL;
+    }
+
+    pmm_LockPage((void*)(region * PAGE_SIZE));
+
+    return (void*)(region * PAGE_SIZE);
+}
+
+void* pmm_AllocatePages(uint64_t numPages)
+{
+    if (numPages == 0)
+    {
+        return NULL;
+    }
+
+    uint64_t region = pmm_FindFreeRegion(&g_PhysicalBitmap, numPages);
+    if (region == INVALID_PAGE)
+    {
+        return NULL;
+    }
+
+    pmm_LockPages((void*)(region * PAGE_SIZE), numPages);
+    return (void*)(region * PAGE_SIZE);
 }
 
 // 0 = free block
@@ -82,6 +148,11 @@ void pmm_FreePage(void* address)
     Bitmap_Set(&g_PhysicalBitmap, index, false);
     freeMemory += 4096;
     usedMemory -= 4096;
+
+    if (g_PhysicalBitmap.lastDeepFragmented > index)
+    {
+        g_PhysicalBitmap.lastDeepFragmented = index;
+    }
 }
 
 void pmm_LockPage(void* address)
@@ -108,6 +179,11 @@ void pmm_UnreservePage(void* address)
     Bitmap_Set(&g_PhysicalBitmap, index, false);
     freeMemory += 4096;
     reservedMemory -= 4096;
+
+    if (g_PhysicalBitmap.lastDeepFragmented > index)
+    {
+        g_PhysicalBitmap.lastDeepFragmented = index;
+    }
 }
 
 void pmm_ReservePage(void* address)
