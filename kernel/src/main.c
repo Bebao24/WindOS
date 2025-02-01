@@ -5,10 +5,10 @@
 #include <logging.h>
 #include <framebuffer.h>
 #include <console.h>
-#include <bitmap.h>
 #include <memory.h>
 #include <pmm.h>
 #include <util.h>
+#include <paging.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -30,15 +30,12 @@ void kmain()
     clearScreen();
 
     InitializePMM();
+    InitializePaging();
 
-    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
-    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
-    printf("pmm alloc 2 pages addr: %llx\n", pmm_AllocatePages(2));
-
-
-    printf("Free memory: %d KB\n", DivRoundUp(pmm_GetFreeMemory(), 1024));
-    printf("Used memory: %d KB\n", DivRoundUp(pmm_GetUsedMemory(), 1024));
-    printf("Reserved memory: %d KB\n", DivRoundUp(pmm_GetReservedMemory(), 1024));
+    paging_MapMemory((void*)0x60000000000000000, (void*)0x80000, PF_RW);
+    uint64_t* test = (uint64_t*)0x60000000000000000;
+    *test = 69;
+    printf("%d\n", *test);
 
     printf("Hello World!\n");
 
