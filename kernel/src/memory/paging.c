@@ -83,4 +83,58 @@ void paging_MapMemory(void* virtualAddr, void* physicalAddr, uint64_t flags)
     invalidate(virtualAddress);
 }
 
+void* paging_VirtualToPhysical(void* virtualAddr)
+{
+    uint64_t virtualAddress = (uint64_t)virtualAddr;
+
+    if (virtualAddress >= g_BootInfo.hhdmOffset && virtualAddress <= (g_BootInfo.hhdmOffset + g_BootInfo.totalMemory))
+    {
+        return (void*)(virtualAddress - g_BootInfo.hhdmOffset);
+    }
+
+    // Save the initial virtual address
+    uint64_t virtualAddr_init = virtualAddress;
+
+    virtualAddress &= ~(0xFFF);
+    virtualAddress = AMD64_MM_STRIPSX(virtualAddress);
+
+    uint64_t pml4_index = PML4E(virtualAddress);
+    uint64_t pdp_index = PDPTE(virtualAddress);
+    uint64_t pd_index = PDE(virtualAddress);
+    uint64_t pt_index = PTE(virtualAddress);
+
+    if (!(g_PageDir[pml4_index] & PF_PRESENT))
+    {
+        goto error;
+    }
+
+    uint64_t* pdp = (uint64_t*)(PTE_GET_ADDR(g_PageDir[pml4_index]) + g_BootInfo.hhdmOffset);
+
+    if (!(pdp[pdp_index] & PF_PRESENT))
+    {
+        goto error;
+    }
+
+    uint64_t* pd = (uint64_t*)(PTE_GET_ADDR(pdp[pdp_index]) + g_BootInfo.hhdmOffset);
+
+    if (!(pd[pd_index]) & PF_PRESENT)
+    {
+        goto error;
+    }
+
+    uint64_t* pt = (uint64_t*)(PTE_GET_ADDR(pd[pd_index]) + g_BootInfo.hhdmOffset);
+
+    if (pt[pt_index] & PF_PRESENT)
+    {
+        return (void*)(PTE_GET_ADDR(pt[pt_index]) + ((uint64_t)virtualAddr_init & 0xFFF));
+    }
+
+    // Otherwise, it will go to the error label
+
+error:
+    return 0;
+
+
+}
+
 

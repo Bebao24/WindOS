@@ -37,6 +37,9 @@ void kmain()
     *test = 69;
     printf("%d\n", *test);
 
+    void* physicalAddr = paging_VirtualToPhysical((void*)0x60000000000000000);
+    printf("Physical Address: %llx\n", (uint64_t)physicalAddr);
+
     printf("Hello World!\n");
 
     while (true)
