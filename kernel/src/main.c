@@ -9,6 +9,7 @@
 #include <pmm.h>
 #include <util.h>
 #include <paging.h>
+#include <vmm.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -32,13 +33,12 @@ void kmain()
     InitializePMM();
     InitializePaging();
 
-    paging_MapMemory((void*)0x60000000000000000, (void*)0x80000, PF_RW);
-    uint64_t* test = (uint64_t*)0x60000000000000000;
-    *test = 69;
-    printf("%d\n", *test);
+    void* address = vmm_AllocatePage();
+    printf("VMM allocation: %llx\n", (uint64_t)address);
+    printf("VMM allocation: %llx\n", vmm_AllocatePage());
+    vmm_FreePage(address);
+    printf("VMM allocation: %llx\n", vmm_AllocatePage());
 
-    void* physicalAddr = paging_VirtualToPhysical((void*)0x60000000000000000);
-    printf("Physical Address: %llx\n", (uint64_t)physicalAddr);
 
     printf("Hello World!\n");
 
