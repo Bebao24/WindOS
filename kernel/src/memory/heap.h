@@ -21,6 +21,6 @@ typedef struct HeapNode
 void InitializeHeap(size_t pagesCount);
 
 void* malloc(size_t size);
-void free();
+void free(void* ptr);
 
 

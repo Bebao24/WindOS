@@ -35,13 +35,11 @@ void kmain()
     InitializePaging();
     InitializeHeap(0x10);
 
-    printf("malloc result: %llx\n", (uint64_t)malloc(0x100));
-    printf("malloc result: %llx\n", (uint64_t)malloc(0x8000));
-
-    void* test = vmm_AllocatePage();
-
-    printf("malloc result: %llx\n", (uint64_t)malloc(0x8000));
-
+    void* addr = malloc(0x100);
+    printf("malloc allocate: %llx\n", (uint64_t)addr);
+    free(addr);
+    printf("malloc allocate: %llx\n", (uint64_t)malloc(0x100));
+    printf("malloc allocate: %llx\n", (uint64_t)malloc(0x100));
 
     printf("Hello World!\n");
 

@@ -211,4 +211,18 @@ void* malloc(size_t size)
     return NULL;
 }
 
+void free(void* ptr)
+{
+    // Make sure that the ptr isn't null
+    if (ptr == NULL)
+    {
+        return;
+    }
+
+    HeapNode* node = (HeapNode*)ptr - 1;
+    node->free = true;
+    CombineForward(node);
+    CombineBackward(node);
+}
+
 
