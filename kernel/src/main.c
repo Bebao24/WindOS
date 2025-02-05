@@ -10,6 +10,7 @@
 #include <util.h>
 #include <paging.h>
 #include <vmm.h>
+#include <heap.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -32,12 +33,14 @@ void kmain()
 
     InitializePMM();
     InitializePaging();
+    InitializeHeap(0x10);
 
-    void* address = vmm_AllocatePage();
-    printf("VMM allocation: %llx\n", (uint64_t)address);
-    printf("VMM allocation: %llx\n", vmm_AllocatePage());
-    vmm_FreePage(address);
-    printf("VMM allocation: %llx\n", vmm_AllocatePage());
+    printf("malloc result: %llx\n", (uint64_t)malloc(0x100));
+    printf("malloc result: %llx\n", (uint64_t)malloc(0x8000));
+
+    void* test = vmm_AllocatePage();
+
+    printf("malloc result: %llx\n", (uint64_t)malloc(0x8000));
 
 
     printf("Hello World!\n");
