@@ -12,6 +12,7 @@
 #include <vmm.h>
 #include <heap.h>
 #include <gdt.h>
+#include <idt.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -37,6 +38,7 @@ void kmain()
     InitializeHeap(0x10);
 
     InitializeGDT();
+    InitializeIDT();
 
     printf("Hello World!\n");
 

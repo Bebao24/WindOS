@@ -29,7 +29,7 @@ void InitializeGDT()
     gdt_entries[1] = kernel_code << 32;
 
     // Kernel data
-    uint64_t kernel_data;
+    uint64_t kernel_data = 0;
     kernel_data |= 0b0011 << 8; // Type of selector
     kernel_data |= 1 << 12; // Not a system descriptor
     kernel_data |= 0 << 13; // Ring 0
