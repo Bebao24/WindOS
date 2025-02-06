@@ -1,8 +1,8 @@
 #include "console.h"
 #include <printf.h>
 
-int g_ScreenX;
-int g_ScreenY;
+uint64_t g_ScreenX;
+uint64_t g_ScreenY;
 
 void InitializeConsole()
 {
@@ -29,7 +29,7 @@ void putc(char c)
             g_ScreenY += CHARACTER_HEIGHT;
             break;
         case '\t':
-            for (int i = 0; i < 4 - (g_ScreenX % 4); i++)
+            for (uint64_t i = 0; i < 4 - (g_ScreenX % 4); i++)
             {
                 putc(' ');
             }

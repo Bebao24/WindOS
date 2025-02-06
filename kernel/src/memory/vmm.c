@@ -25,14 +25,14 @@ void vmm_FreePage(void* ptr)
 
 void vmm_FreePages(void* ptr, uint64_t numPages)
 {
-    uint64_t physicalAddr = paging_VirtualToPhysical(ptr);
+    uint64_t physicalAddr = (uint64_t)paging_VirtualToPhysical(ptr);
     if (!physicalAddr)
     {
         debugf("Can't find the physical address of %llx!\n", (uint64_t)ptr);
         panic();
     }
 
-    pmm_FreePages(physicalAddr, numPages);
+    pmm_FreePages((void*)physicalAddr, numPages);
 }
 
 

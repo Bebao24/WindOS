@@ -28,7 +28,7 @@ void InitializePaging()
 
 uint64_t paging_PhysicalAllocate()
 {
-    uint64_t physicalAddr = pmm_AllocatePage();
+    uint64_t physicalAddr = (uint64_t)pmm_AllocatePage();
 
     void* virtualAddr = (void*)(physicalAddr + g_BootInfo.hhdmOffset);
     memset(virtualAddr, 0, PAGE_SIZE);
