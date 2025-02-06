@@ -35,11 +35,7 @@ void kmain()
     InitializePaging();
     InitializeHeap(0x10);
 
-    void* addr = malloc(0x100);
-    printf("malloc allocate: %llx\n", (uint64_t)addr);
-    free(addr);
-    printf("malloc allocate: %llx\n", (uint64_t)malloc(0x100));
-    printf("malloc allocate: %llx\n", (uint64_t)malloc(0x100));
+    
 
     printf("Hello World!\n");
 
