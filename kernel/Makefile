@@ -24,7 +24,7 @@ TARGET_DIR = ../target
 
 $(TARGET_DIR)/kernel/kernel.bin: $(C_OBJECTS) $(ASM_OBJECTS)
 	@ mkdir -p $(TARGET_DIR)/kernel
-	@ echo "Linking " $<
+	@ echo "Linking " $@
 	@ $(TARGET_LD) $(TARGET_LINKFLAGS) -o $(BUILD_DIR)/kernel/kernel.bin $^ $(TARGET_LIBS)
 	@ cp $(BUILD_DIR)/kernel/kernel.bin $@
 
@@ -35,6 +35,6 @@ $(BUILD_DIR)/kernel/x86_64/%.o: src/%.c $(C_HEADERS)
 
 $(BUILD_DIR)/kernel/x86_64/%_asm.o: src/%.asm $(ASM_HEADERS)
 	@ mkdir -p $(@D)
-	@ echo "Assembling  " $<
+	@ echo "Assembling " $<
 	@ $(TARGET_ASM) $(TARGET_ASMFLAGS) -o $@ $<
 
