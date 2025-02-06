@@ -11,6 +11,7 @@
 #include <paging.h>
 #include <vmm.h>
 #include <heap.h>
+#include <gdt.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -35,7 +36,7 @@ void kmain()
     InitializePaging();
     InitializeHeap(0x10);
 
-    
+    InitializeGDT();
 
     printf("Hello World!\n");
 
