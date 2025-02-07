@@ -42,9 +42,6 @@ void kmain()
     InitializeIDT();
     InitializeISR();
 
-    int* crash_address = 0x60000000000000000;
-    *crash_address = 69;
-
     printf("Hello World!\n");
 
     while (true)

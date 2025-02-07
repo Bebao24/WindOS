@@ -17,3 +17,8 @@ uint8_t x64_inb(uint16_t port)
     return returnValue;
 }
 
+void x64_iowait()
+{
+    x64_outb(0x80, 0);
+}
+
