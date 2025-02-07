@@ -56,3 +56,48 @@ void PIC_Remap(uint8_t offsetPIC1, uint8_t offsetPIC2)
 	x64_outb(PIC2_DATA_PORT, 0);
 	x64_iowait();
 }
+
+void PIC_SendEOI(int irq)
+{
+	if (irq >= 8)
+	{
+		x64_outb(PIC2_COMMAND_PORT, 0x20);
+	}
+	x64_outb(PIC1_COMMAND_PORT, 0x20);
+}
+
+void PIC_MaskIRQ(int irq)
+{
+	uint8_t port;
+
+	if (irq < 8)
+	{
+		port = PIC1_COMMAND_PORT;
+	}
+	else
+	{
+		port = PIC2_COMMAND_PORT;
+		irq -= 8;
+	}
+
+	uint8_t mask = x64_inb(port);
+	x64_outb(port, mask | (1 << irq));
+}
+
+void PIC_UnmaskIRQ(int irq)
+{
+	uint8_t port;
+
+	if (irq < 8)
+	{
+		port = PIC1_COMMAND_PORT;
+	}
+	else
+	{
+		port = PIC2_COMMAND_PORT;
+		irq -= 8;
+	}
+
+	uint8_t mask = x64_inb(port);
+	x64_outb(port, mask & ~(1 << irq));
+}

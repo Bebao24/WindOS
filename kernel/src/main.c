@@ -14,6 +14,7 @@
 #include <gdt.h>
 #include <idt.h>
 #include <isr.h>
+#include <irq.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -41,6 +42,7 @@ void kmain()
     InitializeGDT();
     InitializeIDT();
     InitializeISR();
+    InitializeIRQ();
 
     printf("Hello World!\n");
 
