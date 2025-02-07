@@ -2,6 +2,7 @@
     "files.associations": {
         "logging.h": "c",
         "psf.h": "c",
-        "console.h": "c"
+        "console.h": "c",
+        "compare": "cpp"
     }
 }

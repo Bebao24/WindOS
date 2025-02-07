@@ -13,6 +13,7 @@
 #include <heap.h>
 #include <gdt.h>
 #include <idt.h>
+#include <isr.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -39,6 +40,10 @@ void kmain()
 
     InitializeGDT();
     InitializeIDT();
+    InitializeISR();
+
+    int* crash_address = 0x60000000000000000;
+    *crash_address = 69;
 
     printf("Hello World!\n");
 
