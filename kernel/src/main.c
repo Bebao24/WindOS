@@ -15,6 +15,8 @@
 #include <idt.h>
 #include <isr.h>
 #include <irq.h>
+#include <pic.h>
+#include <timer.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -43,6 +45,12 @@ void kmain()
     InitializeIDT();
     InitializeISR();
     InitializeIRQ();
+
+    InitializeTimer();
+
+    printf("Before 1 second\n");
+    sleep(1000);
+    printf("After 1 second\n");
 
     printf("Hello World!\n");
 

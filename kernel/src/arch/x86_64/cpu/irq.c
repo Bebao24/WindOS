@@ -1,6 +1,6 @@
 #include "irq.h"
 #include <isr.h>
-#include <console.h>
+#include <logging.h>
 #include <stddef.h>
 #include <pic.h>
 
@@ -16,7 +16,7 @@ void IRQ_Handler(cpu_registers_t* cpu)
     }
     else
     {
-        printf("Unhandled IRQ: %d\n", irq);
+        debugf("Unhandled IRQ: %d\n", irq);
     }
 
     // Send EOI
