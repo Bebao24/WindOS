@@ -1,8 +1,8 @@
 #include "console.h"
 #include <printf.h>
 
-uint64_t g_ScreenX;
-uint64_t g_ScreenY;
+int g_ScreenX;
+int g_ScreenY;
 
 void InitializeConsole()
 {
@@ -29,9 +29,25 @@ void putc(char c)
             g_ScreenY += CHARACTER_HEIGHT;
             break;
         case '\t':
-            for (uint64_t i = 0; i < 4 - (g_ScreenX % 4); i++)
+            for (int i = 0; i < 4 - (g_ScreenX % 4); i++)
             {
                 putc(' ');
+            }
+            break;
+        case '\b':
+            if (g_ScreenX <= 0 && g_ScreenY >= 0)
+            {
+                g_ScreenX = fbWidth;
+                g_ScreenY -= CHARACTER_HEIGHT;
+            }
+
+            g_ScreenX -= CHARACTER_WIDTH;
+            fb_drawRect(g_ScreenX, g_ScreenY, CHARACTER_WIDTH, CHARACTER_HEIGHT, BACKGROUND_COLOR);
+
+            if (g_ScreenX <= 0 && g_ScreenY >= 0)
+            {
+                g_ScreenX = fbWidth;
+                g_ScreenY -= CHARACTER_HEIGHT;
             }
             break;
         default:
@@ -40,13 +56,13 @@ void putc(char c)
             break;
     }
 
-    if (g_ScreenX >= fbWidth)
+    if ((uint64_t)g_ScreenX >= fbWidth)
     {
         g_ScreenX = 0;
         g_ScreenY += CHARACTER_HEIGHT;
     }
 
-    if (g_ScreenY >= fbHeight)
+    if ((uint64_t)g_ScreenY >= fbHeight)
     {
         // We need to implement scroll back later
         clearScreen();
