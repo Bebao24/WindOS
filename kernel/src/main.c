@@ -17,6 +17,7 @@
 #include <irq.h>
 #include <pic.h>
 #include <timer.h>
+#include <keyboard.h>
 
 // Set base revision to 3
 __attribute__((used, section(".limine_requests")))
@@ -47,12 +48,23 @@ void kmain()
     InitializeIRQ();
 
     InitializeTimer();
-
-    printf("Before 1 second\n");
-    sleep(1000);
-    printf("After 1 second\n");
+    InitializeKeyboard();
 
     printf("Hello World!\n");
+
+    while (true)
+    {
+        char key = kb_getKey();
+
+        if (key == '\r')
+        {
+            // The user pressed enter
+            putc('\n');
+            continue;
+        }
+
+        putc(key);
+    }
 
     while (true)
     {

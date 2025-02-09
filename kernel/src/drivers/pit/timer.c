@@ -1,6 +1,7 @@
 #include "timer.h"
 #include <irq.h>
 #include <system.h>
+#include <util.h>
 
 uint64_t ticks;
 uint32_t frequncy = 1193;
@@ -25,7 +26,8 @@ void sleep(uint64_t duration)
     }
 }
 
-void timerTick()
+void timerTick(cpu_registers_t* cpu)
 {
+    USED(cpu);
     ticks++;
 }

@@ -8,7 +8,8 @@
                 "${workspaceFolder}/kernel/src/arch/x86_64/cpu",
                 "${workspaceFolder}/kernel/src/drivers",
                 "${workspaceFolder}/kernel/src/utils",
-                "${workspaceFolder}/kernel/src/drivers/pit"
+                "${workspaceFolder}/kernel/src/drivers/pit",
+                "${workspaceFolder}/kernel/src/drivers/keyboard"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
